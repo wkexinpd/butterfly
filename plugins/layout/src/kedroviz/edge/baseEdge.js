@@ -9,7 +9,6 @@ const matchFloats = /\d+\.\d+/g;
 class KedrovizEdge extends BaseEdge {
   constructor(opts) {
     super(opts);
-    console.log("opts",opts);
     this.points = opts.options.points;
     this.lineShape = line()
     .x((d) => d.x)
@@ -51,9 +50,7 @@ class KedrovizEdge extends BaseEdge {
   toSinglePoint(value) {return parseFloat(value).toFixed(1);}
   limitPrecision(path){ return path.replace(matchFloats, this.toSinglePoint)};
   calcPath(sourcePoint, targetPoint) {
-    // console.log(sourcePoint, targetPoint);
     return this.redrawPath(this.points);
-    // return this.d;
   }
 }
 

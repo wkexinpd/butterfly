@@ -1,6 +1,9 @@
+/*
+* Copyright 2020 QuantumBlack Visual Analytics Limited
+* SPDX-License-Identifier: Apache-2.0
+*/
 import { getVisibleLayerIDs } from './disabled';
 import batchingToposort from 'batching-toposort';
-const { edges } = require('../data.json');
 
 export const getLayerNodes = (node, layer) => {
   let nodeLayer = node.layer;
@@ -20,7 +23,7 @@ export const getLayerNodes = (node, layer) => {
   return layerIDs.map((layerID) => layerNodes[layerID]);
 }
 
-export const getNodeRank = (node, layer) => {
+export const getNodeRank = (node, edges, layer) => {
   const layerIDs = getVisibleLayerIDs(node, layer);
   let layerNodes = getLayerNodes(node, layer);
   let nodeIDs = node.ids;
@@ -32,7 +35,7 @@ export const getNodeRank = (node, layer) => {
     nodeDeps[nodeID] = [];
   }
   for (const edge of edges) {
-    nodeDeps[edge.source].push(edge.target);
+    nodeDeps[edge.sourceNode].push(edge.targetNode);
   }
 
   for (let i = 1; i < layerNodes.length; i++) {

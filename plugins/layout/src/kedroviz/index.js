@@ -3,4 +3,4 @@ import BaseLayers from './layers/baseLayers';
 import KedrovizEdge from './edge/baseEdge';
 
 
-export { kedrovizLayout, BaseLayers, KedrovizEdge  };
+export { kedrovizLayout, BaseLayers, KedrovizEdge };

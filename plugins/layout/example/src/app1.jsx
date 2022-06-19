@@ -54,6 +54,9 @@ class Scene extends Component {
       res.name = n.name;
       res.Class = BaseNode;
       res.layer = n.layer;
+      res.draggable = false;
+      res.width = n.width;
+      res.height = n.height;
       res.endpoints = [{
         id: 'down',
         orientation: [0, 1],
@@ -73,11 +76,12 @@ class Scene extends Component {
       res.sourceNode = e.source;
       res.targetNode = e.target;
       res.arrow = true;
+      res.arrowPosition = 1;
       res.Class = KedrovizEdge;
       return res;
     });
 
-    this.canvas.draw({nodes, edges, layers: {layers: treeData.layers, class: BaseLayers, visible: true }}, () => {
+    this.canvas.draw({nodes, edges, layers: {layers: treeData.layers, class: BaseLayers, visible: true }, direction: "row"}, () => {
 
     });
     this.canvas.on('events', (data) => {
