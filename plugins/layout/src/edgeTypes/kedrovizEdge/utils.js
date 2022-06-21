@@ -1,8 +1,3 @@
-/*
-* Copyright 2020 QuantumBlack Visual Analytics Limited
-* SPDX-License-Identifier: Apache-2.0
-*/
-export const HALF_PI = Math.PI * 0.5;
 
 export const clamp = (value, min, max) =>
   value < min ? min : value > max ? max : value;
@@ -58,21 +53,6 @@ export const compare = (a, b, ...values) => {
   return delta !== 0 || values.length === 0 ? delta : compare(...values);
 };
 
-export const offsetNode = (node, offset) => {
-  node.x = node.x - offset.x;
-  node.y = node.y - offset.y;
-  node.order = node.x + node.y * 9999;
-  return node;
-};
-
-export const offsetEdge = (edge, offset) => {
-  edge.points.forEach((point) => {
-    point.x = point.x - offset.x;
-    point.y = point.y - offset.y;
-  });
-  return edge;
-};
-
 export const nearestOnLine = (x, y, ax, ay, bx, by) => {
   const dx = bx - ax;
   const dy = by - ay;
@@ -88,3 +68,4 @@ export const nearestOnLine = (x, y, ax, ay, bx, by) => {
     by,
   };
 };
+

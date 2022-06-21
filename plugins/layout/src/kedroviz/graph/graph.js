@@ -4,23 +4,22 @@
 */
 import { offsetNode, offsetEdge } from './common';
 import { layout } from './layout';
-import { routing } from './routing';
+// import { routing } from './routing';
 import { bounds } from '../selectors/size'
 
 
-export const graph = (nodes, edges, layers, direction, options) => {
+export const graph = (nodes, edges, layers, rankdir, options) => {
   addEdgeLinks(nodes, edges);
   addNearestLayers(nodes, layers);
 
-  layout({ nodes, edges, layers, direction, ...options.layout });
-  routing({ nodes, edges, layers, direction, ...options.routing });
-
+  layout({ nodes, edges, layers, rankdir, ...options.layout });
   const size = bounds(nodes, options.layout.padding);
-
   nodes.forEach((node) => offsetNode(node, size.min));
+
+  // routing({ nodes, edges, layers, rankdir, ...options.routing });
+
   nodes.forEach((node) => node.x = node.x - (node.width * 0.5));
   nodes.forEach((node) => node.y = node.y - (node.height * 0.5));
-  edges.forEach((edge) => offsetEdge(edge, size.min));
 
   return {
     nodes,
@@ -40,8 +39,10 @@ export const addEdgeLinks = (nodes, edges) => {
   }
 
   for (const edge of edges) {
-    edge.sourceNodeObj = nodeById[edge.sourceNode];
-    edge.targetNodeObj = nodeById[edge.targetNode];
+    let sourceNode = edge.sourceNode || edge.source;
+    let targetNode = edge.targetNode || edge.target;
+    edge.sourceNodeObj = nodeById[sourceNode];
+    edge.targetNodeObj = nodeById[targetNode];
     edge.sourceNodeObj.targets.push(edge);
     edge.targetNodeObj.sources.push(edge);
   }

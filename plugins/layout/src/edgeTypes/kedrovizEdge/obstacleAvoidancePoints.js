@@ -1,8 +1,5 @@
-/*
-* Copyright 2020 QuantumBlack Visual Analytics Limited
-* SPDX-License-Identifier: Apache-2.0
-*/
-import {
+'use strict';
+import { 
   compare,
   distance1d,
   angle,
@@ -11,10 +8,10 @@ import {
   nodeLeft,
   nodeRight,
   nodeTop,
-  nodeBottom,
-} from './common';
+  nodeBottom
+} from './utils.js';
 
-export const routing = ({
+const routing = ({
   nodes,
   edges,
   rankdir,
@@ -28,6 +25,9 @@ export const routing = ({
   stemSpaceSource,
   stemSpaceTarget,
 }) => {
+  nodes.forEach((node) => node.x = node.left + (node.width * 0.5));
+  nodes.forEach((node) => node.y = node.top + (node.height * 0.5));
+
   const rows = groupByRow(nodes, rankdir);
 
   for (const node of nodes) {
@@ -42,6 +42,10 @@ export const routing = ({
   for (const edge of edges) {
     const source = edge.sourceNodeObj;
     const target = edge.targetNodeObj;
+    source.x = source.left + (source.width * 0.5);
+    source.y = source.top + (source.height * 0.5);
+    target.x = target.left + (target.width * 0.5);
+    target.y = target.top + (target.height * 0.5);
 
     edge.points = [];
     const sourceSeparation = rankdir === 'column' ? Math.min(
@@ -283,3 +287,44 @@ export const routing = ({
     edge.points = points;
   }
 };
+
+const addEdgeLinks = (nodes, edges) => {
+  const nodeById = {};
+
+  for (const node of nodes) {
+    nodeById[node.id] = node;
+    node.targets = [];
+    node.sources = [];
+  }
+
+  for (const edge of edges) {
+    let sourceNode = edge.sourceNode || edge.source;
+    let targetNode = edge.targetNode || edge.target;
+    edge.sourceNodeObj = nodeById[sourceNode];
+    edge.targetNodeObj = nodeById[targetNode];
+    edge.sourceNodeObj.targets.push(edge);
+    edge.targetNodeObj.sources.push(edge);
+  }
+};
+
+
+const obstacleAvoidancePoints = (opts) => {
+  let {nodes = [], edges = [], layout = {}} = opts;
+  let rankdir = layout.options && layout.options.rankdir || 'TB';
+  let _rankdir = rankdir === 'TB' || rankdir === 'BT' ? 'column' : 'row';
+  const defaultOptions = {
+    spaceDirection: 26,
+    spaceReverseDirection: 30,
+    minPassageGap: 40,
+    stemUnit: 8,
+    stemMinSource: 5,
+    stemMinTarget: 5,
+    stemMax: 20,
+    stemSpaceSource: 6,
+    stemSpaceTarget: 10
+  };
+  addEdgeLinks(nodes, edges);
+  routing({nodes, edges, rankdir: _rankdir, ...defaultOptions});
+}
+
+export default obstacleAvoidancePoints;
