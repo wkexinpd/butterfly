@@ -5,11 +5,11 @@ import KedrovizCanvas from '../../src/canvas/baseCanvas';
 import './app1.less';
 import '../../../../static/butterfly.css';
 const treeData = require('./mock_data2.json');
-// import {kedrovizLayout, KedrovizEdge, BaseLayers, obstacleAvoidancePoints} from 'butterfly-plugins-layout';
+import {kedrovizLayout, KedrovizEdge, BaseLayers, obstacleAvoidancePoints} from 'butterfly-plugins-layout';
 import 'butterfly-plugins-layout/dist/index.css';
-import obstacleAvoidancePoints from '../../src/edgeTypes/obstacleAvoidanceEdge/obstacleAvoidancePoints';
-import {kedrovizLayout, BaseLayers} from '../../../../plugins/layout/src/kedroviz';
-import KedrovizEdge from '../../src/edgeTypes/obstacleAvoidanceEdge/ObstacleAvoidanceEdge';
+// import obstacleAvoidancePoints from '../../src/edgeTypes/obstacleAvoidanceEdge/obstacleAvoidancePoints';
+// import {kedrovizLayout, BaseLayers} from '../../../../plugins/layout/src/kedroviz';
+// import KedrovizEdge from '../../src/edgeTypes/obstacleAvoidanceEdge/ObstacleAvoidanceEdge';
 
 class BaseNode extends Node {
   constructor(opts) {
